@@ -3,6 +3,7 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+
 # User-specific files
 *.rsuser
 *.suo
@@ -11,14 +12,13 @@
 *.sln.docstates
 *.vscode
 /Library
-/ProjectSettings
 /Temp
 /UserSettings
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
-# Build results
+ Build results
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
@@ -38,14 +38,14 @@ bld/
 #wwwroot/
 
 # Visual Studio 2017 auto generated files
-Generated\ Files/
+#Generated\ Files/
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
 
 # NUNIT
-*.VisualState.xml
+#*.VisualState.xml
 TestResult.xml
 
 # Build Results of an ATL Project
@@ -54,7 +54,7 @@ TestResult.xml
 dlldata.c
 
 # Benchmark Results
-BenchmarkDotNet.Artifacts/
+#BenchmarkDotNet.Artifacts/
 
 # .NET Core
 project.lock.json
@@ -62,14 +62,13 @@ project.fragment.lock.json
 artifacts/
 
 # StyleCop
-StyleCopReport.xml
+#StyleCopReport.xml
 
 # Files built by Visual Studio
 *_i.c
 *_p.c
 *_h.h
 *.ilk
-*.meta
 *.obj
 *.iobj
 *.pch
@@ -183,12 +182,12 @@ publish/
 # Microsoft Azure Web App publish settings. Comment the next line if you want to
 # checkin your Azure Web App publish settings, but sensitive information contained
 # in these scripts will be unencrypted
-PublishScripts/
+#PublishScripts/
 
 # NuGet Packages
 *.nupkg
 # The packages folder can be ignored because of Package Restore
-**/[Pp]ackages/*
+#**/[Pp]ackages/*
 # except build/, which is used as an MSBuild target.
 !**/[Pp]ackages/build/
 # Uncomment if necessary however generally it will be regenerated when needed
