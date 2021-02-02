@@ -119,7 +119,7 @@ public class Physics2DObject : MonoBehaviour
                 float projection = Vector2.Dot(velocity, currentNormal);
                 if(projection < 0)
                 {
-                    velocity = velocity - projection*currentNormal;
+                    velocity -= projection*currentNormal;
                 }
 
                 // Modify our distance according to the collision. 
@@ -130,6 +130,6 @@ public class Physics2DObject : MonoBehaviour
         }
 
         // Apply our movement after all checks are done.
-        rbody.position = rbody.position + move.normalized*distance;
+        rbody.position += move.normalized*distance;
     }
 }

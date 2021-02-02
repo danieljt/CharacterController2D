@@ -29,7 +29,7 @@ public class Player : MonoBehaviour
         input.onActionTriggered -= HandleInput;
     }
 
-    private void FixedUpdate()
+	private void FixedUpdate()
     {
         controller.Move(move*Time.fixedDeltaTime);
     }

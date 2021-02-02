@@ -5,82 +5,226 @@ using UnityEngine;
 
 ///<summary>
 /// The CharacterController2D is responsible for moving a kinematic rigidbody using custom unphysical
-/// physics. It solves the simplest movement motion without a blocky and heavy dynamic rigidbody.
+/// physics. It solves the simplest movement motion without a blocky and heavy dynamic rigidbody. 
 /// 
 ///</summary>
 public class CharacterController2D : MonoBehaviour
 {
-    [Tooltip("The minimum ground normal. To prevent the controller registering walls as ground, we set this to a small value")]
-    [SerializeField] protected float minimumGroundNormal = 0.5f;
-
-    [Tooltip("The smallest movement distance required before collision checking is enabled. Prevents needless calculations when the character is still")]
-    [SerializeField] protected float minimumMoveDistance = 0.01f;
-
     [Tooltip("A small value that is added to the collision checking to prevent colliders getting stuck")]
     [SerializeField] protected float skinWidth = 0.01f;
+    [SerializeField] protected float slopeLimit = 50f;
+    [SerializeField] protected int iterations = 2;
 
-    [Tooltip("The largest slope the charactercontroller can move up or down")]
-    [SerializeField] protected float slopeLimit = 45f;
 
     // Collision 
     protected Rigidbody2D rBody;
     protected ContactFilter2D contactFilter;
-    protected RaycastHit2D[] hitArray = new RaycastHit2D[16];
+    protected List<Collider2D> colliderList = new List<Collider2D>(16);
     protected List<RaycastHit2D> hitList = new List<RaycastHit2D>(16);
-    protected List<RaycastHit2D> hitListPrevious = new List<RaycastHit2D>(16);
+    protected Bounds bounds;
 
-    // Ground values
-    protected Vector2 groundNormal;
-    protected Vector2 slopeMoveVector;
-    protected bool isGrounded;
-    protected bool isColliding;
   
     private void Awake()
     {
+        // Set up rigidbody
         rBody = GetComponent<Rigidbody2D>();
+        rBody.isKinematic = true;
+
+        // Set up our collision matrix
         contactFilter.useTriggers = false;
         contactFilter.SetLayerMask(Physics2D.GetLayerCollisionMask(gameObject.layer));
         contactFilter.useLayerMask = true;
     }
 
-    ///<summary>
-    /// Moves the attached gameobject to the given position. This function uses position deltas,
-    /// where the positions respond to collisions. This method does not use gravity or any other forces.
-    /// Forces should be applied before calling this function. This metod responds to slopes.
-    /// Only call this method once per fixed update frame.
-    /// 
-    /// 
-    ///</summary>
     public void Move(Vector2 deltaPosition)
     {
-        // We must cast the rigidbody in the distance of the deltaposition to get the
-        // overlaps with the rest of the world
-        float distance = deltaPosition.magnitude;
-        int count = rBody.Cast(deltaPosition, contactFilter, hitArray, distance);
+        // TODO
+        // WHEN SLIDING AGAINST A WALL THE SPEED IN THE OTHER AXIS IS SLOWED. MUST FIND OUT WHY
+        Vector2 upVector = Vector2.up;
+        Vector2 groundDir = new Vector2(deltaPosition.x, 0);
+        Vector2 verticMove = new Vector2(0, deltaPosition.y);
 
-        hitList.Clear();
-        for(int i=0; i<count; i++)
+        HandleGroundMovement(groundDir, upVector, iterations);
+        HandleDownMovement(verticMove, upVector, iterations);
+
+    }
+
+    // Movement along ground
+    private void HandleGroundMovement(Vector2 direction, Vector2 upDirection, int maxIterations)
+	{
+        float bounciness = 0;
+        float friction = 1;
+
+        Vector2 currentPosition = rBody.position;
+        Vector2 targetPosition = rBody.position + direction;
+        int i = 0;
+        while(i < maxIterations)
+		{
+            Vector2 currentDirection = targetPosition - currentPosition;
+            if(currentDirection.sqrMagnitude < Mathf.Epsilon*Mathf.Epsilon)
+			{
+                break;
+			}
+
+            float distance = currentDirection.magnitude;
+
+            // Detection
+            int hits = rBody.Cast(currentDirection, contactFilter, hitList, distance);
+            if(hits <= 0)
+			{
+                currentPosition = targetPosition;
+                break;
+			}
+
+            // Find the closest hit
+            RaycastHit2D hit = FindClosestRaycastHit2D(hitList);
+            
+            // Movement
+            float modifiedDistance = hit.distance - skinWidth;
+            distance = modifiedDistance < distance ? modifiedDistance : distance;
+            currentPosition += currentDirection.normalized*distance;
+
+            // Direction vector for angle calculations
+            if (Vector2.Dot(hit.normal, upDirection) < 0)
+			{
+                upDirection = -upDirection;
+			}
+
+            // Collision Resolution
+            Vector2 reflected = Vector2.Reflect(currentDirection, hit.normal).normalized;
+            Vector2 normalComponent = Vector2.Dot(reflected, hit.normal) * hit.normal;
+            Vector2 tangentComponent = reflected - normalComponent;
+
+            float amplitude = (targetPosition - currentPosition).magnitude;
+
+            // Handle angle
+            float angle = Vector2.Angle(upDirection, hit.normal);
+            if (angle <= slopeLimit)
+            {
+                targetPosition = currentPosition + normalComponent.normalized * bounciness * amplitude + tangentComponent.normalized * friction * amplitude;
+            }
+
+            else
+			{
+                targetPosition = currentPosition;
+			}
+
+            rBody.position = currentPosition;
+            i++;
+		}
+
+        // Final position
+        rBody.position = currentPosition;
+	}
+
+    // Movement downwards
+    private void HandleDownMovement(Vector2 direction, Vector2 upDirection, int maxIterations)
+	{
+        float bounciness = 0;
+        float friction = 1.0f;
+
+        Vector2 currentPosition = rBody.position;
+        Vector2 targetPosition = rBody.position + direction;
+        int i = 0;
+
+        while(i < maxIterations)
+		{
+            // Direction and length
+            Vector2 currentDirection = targetPosition - currentPosition;
+            if(currentDirection.sqrMagnitude < Mathf.Epsilon*Mathf.Epsilon)
+			{
+                break;
+			}
+
+            float distance = currentDirection.magnitude;
+
+            // Collision Detection
+            int hits = rBody.Cast(currentDirection, contactFilter, hitList, distance);
+            if(hits <= 0)
+			{
+                currentPosition = targetPosition;
+                break;
+			}
+
+            RaycastHit2D hit = FindClosestRaycastHit2D(hitList);
+
+            // Movement
+            float modifiedDistance = hit.distance - skinWidth;
+            distance = modifiedDistance < distance ? modifiedDistance : distance;
+            currentPosition += currentDirection.normalized*distance;
+
+            // Chose up or -up vector depending on the y orientation of the surface hit
+            if(Vector2.Dot(hit.normal, upDirection) < 0)
+			{
+                upDirection = -upDirection;
+			}
+
+            // Collision resolution
+            Vector2 reflected = Vector2.Reflect(currentDirection, hit.normal).normalized;
+            Vector2 normalComponent = Vector2.Dot(reflected, hit.normal) * hit.normal;
+            Vector2 tangentComponent = reflected - normalComponent;
+            float remainingDistance = (targetPosition - currentPosition).magnitude;
+
+            // Slope angle
+            float angle = Vector2.Angle(upDirection, hit.normal);
+            if(angle > slopeLimit)
+			{
+                targetPosition = currentPosition + normalComponent.normalized * remainingDistance * bounciness + tangentComponent.normalized * remainingDistance * friction;
+			}
+            else
+			{
+                targetPosition = currentPosition;
+			}
+
+            //rBody.MovePosition(currentPosition);
+            rBody.position = currentPosition;
+            i++;
+		}
+        //rBody.MovePosition(currentPosition);
+        rBody.position = currentPosition;
+    }
+
+    // Movement upwards
+    private void HandleUpMovement(ref Vector2 targetPosition, int maxIterations)
+	{
+
+	}
+
+    // Find closest hit from cast
+    private RaycastHit2D FindClosestRaycastHit2D(List<RaycastHit2D> hits)
+	{
+        RaycastHit2D result = default;
+        if(hits != null)
         {
-            hitList.Add(hitArray[i]);
+            int size = hits.Count;
+
+            if (size <= 0)
+            {
+                return default;
+            }
+
+            else if (size == 1)
+            {
+                return hits[0];
+            }
+
+            else
+            {
+                result = hits[0];
+                for (int i = 1; i < hits.Count; i++)
+                {
+                    if(hits[i].distance < result.distance)
+				    {
+                        result = hits[i];
+					}
+                }
+                return result;
+            }
         }
 
-        // This is where we compute the collision responses. This is the hard part. We must be able to handle 
-        // the following situations
-        // - No collisions
-        // - sloped movement
-        // - step movement
-
-
-    }
-
-    
-    public void Predict(Vector2 deltaposition)
-    {
-
-    }
-
-    public void Correct(Vector2 deltaPosition)
-    {
-
-    }
+        else
+		{
+            return result;
+		}
+	}
 }

@@ -11,9 +11,11 @@
 *.userosscache
 *.sln.docstates
 *.vscode
+*.csproj
 /Library
 /Temp
 /UserSettings
+/Logs
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
