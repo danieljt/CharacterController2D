@@ -51,8 +51,6 @@ public class Player : MonoBehaviour
             yVelocity += Physics2D.gravity.y * Time.fixedDeltaTime;
 		}
 
-        //yVelocity += Physics2D.gravity.y * Time.fixedDeltaTime;
-
         controller.Move(new Vector2(xVelocity, yVelocity) * Time.fixedDeltaTime);
     }
 

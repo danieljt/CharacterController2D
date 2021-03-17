@@ -74,14 +74,18 @@ public class CharacterController2D : MonoBehaviour
 		{
             // Ground check
             Sensor(-upDirection, skinWidth, upDirection);
-
+            Vector2 startPosition = rBody.position;
             Vector2 currentDirection = targetPosition - currentPosition;
+
+            // If no movement is added break out of the loop. Consider changing this if
+            // dealing with dynamic or moving kinematic objects
             if(currentDirection.sqrMagnitude < Mathf.Epsilon*Mathf.Epsilon)
 			{
                 break;
 			}
 
             float distance = currentDirection.magnitude;
+            float initialDistance = distance;
 
             int hits = rBody.Cast(currentDirection, contactFilter, hitList, distance);
             if (hits <= 0)
@@ -128,34 +132,67 @@ public class CharacterController2D : MonoBehaviour
                 }
             }
 
-            // Here, we check if we have run off a slope. We have run of a slope if we were grounded before movement
-            // but not after the movement
+            // Second ground check
             bool wasGrounded = isTouchingGround;
             Sensor(-upDirection, skinWidth, upDirection);
+
+            // Apply slope clamp 
             if(wasGrounded && !isTouchingGround)
 			{
-                /*
-                // If moving down a sloped platform moving upwards this migth fail due to the the player
-                // getting vertical movement from the platform.
-                if (verticalDirection.sqrMagnitude < Mathf.Epsilon * Mathf.Epsilon)
-                {
-                    // Clamp to slope
-                    Debug.Log("Walked off slope");
-                    hits = rBody.Cast(-upDirection, contactFilter, hitList, SlopeCastDistance(2f));
-                    if(hits > 0)
+                hits = rBody.Cast(-upDirection, contactFilter, hitList, SlopeCastDistance(distance));
+                Vector2 groundNormal = Vector2.zero;
+                bool hitSlope = false;
+                float angle = 0;
+                if(hits > 0)
+				{
+                    for(int j=0; j<hits; j++)
 					{
-                        for(int j=0; j<hits; j++)
+                        angle = Vector2.Angle(hitList[j].normal, upDirection);
+                        if(angle <= slopeLimit)
 						{
-                            if(Vector2.Angle(hitList[i].normal, upDirection) <= slopeLimit)
-							{
+                            hitSlope = true;
+                            groundNormal = hitList[j].normal;
+                            float adjustedDistance = hitList[j].distance - skinWidth;
+                            //distance = adjustedDistance < distance ? adjustedDistance : distance;
+                            //rBody.position += -upDirection.normalized * distance;
+                            float downDistance = adjustedDistance < distance ? adjustedDistance : hitList[j].distance;
+                            rBody.position += -upDirection.normalized * downDistance;
+                        }
+					}
 
+                    // We hit a legal slope, we can now do our backtracking by first casting backwards along the
+                    // slope.
+                    if(hitSlope)
+					{
+                        float directionDotNormal = Vector2.Dot(currentDirection, groundNormal);
+                        float directionDotUp = Vector2.Dot(currentDirection, upDirection);
+
+                        if(directionDotNormal >= 0 && directionDotUp <= 0)
+						{
+                            Vector2 reflected = Vector2.Reflect(currentDirection, groundNormal);
+                            Vector2 normalComponent = Vector2.Dot(reflected, groundNormal) * groundNormal;
+                            Vector2 tangentComponent = normalComponent - reflected;
+
+                            hits = rBody.Cast(tangentComponent, contactFilter, hitList, distance/(Mathf.Cos(angle)*Mathf.Rad2Deg));
+                            if(hits > 0)
+							{
+                                // We hit a step, meaning we should check the step offset.
+                                rBody.position = currentPosition;
 							}
+
+                            else
+							{
+                                Vector2 lengthDownSlope = startPosition - tangentComponent.normalized * distance;
+                                currentPosition = lengthDownSlope;
+                                targetPosition = currentPosition;
+                                rBody.position = targetPosition;
+							}
+
 						}
 					}
-                }
-                */
+				}
 			}
-
+            Debug.Log(distance);
             i++;
 		}
 
@@ -253,6 +290,12 @@ public class CharacterController2D : MonoBehaviour
 		}
 	}
 
+    /// <summary>
+    /// Special cast distance depending on the slope limit, velocity and other
+    /// parameters.
+    /// </summary>
+    /// <param name="distance"></param>
+    /// <returns></returns>
     protected float SlopeCastDistance(float distance)
 	{
         return distance;
