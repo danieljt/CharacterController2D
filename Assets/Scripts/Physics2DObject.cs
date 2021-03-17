@@ -91,7 +91,6 @@ public class Physics2DObject : MonoBehaviour
             int count = rbody.Cast(move, contactFilter, hitBuffer, distance + shellRadius);
             hitBufferList.Clear();
 
-
             for(int i=0; i<count; i++)
             {
                 hitBufferList.Add(hitBuffer[i]);

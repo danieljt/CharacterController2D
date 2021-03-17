@@ -9,9 +9,14 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     public float speed;
+    public float jumpSpeed;
+
     private CharacterController2D controller;
     private PlayerInput input;
-    private Vector2 move;
+    private Vector2 inputVector;
+    private float yVelocity;
+    private float xVelocity;
+    private bool jump;
     
     private void Awake()
     {
@@ -31,20 +36,36 @@ public class Player : MonoBehaviour
 
 	private void FixedUpdate()
     {
-        controller.Move(move*Time.fixedDeltaTime);
+        xVelocity = inputVector.x * speed;
+
+        if(controller.IsGrounded)
+		{
+            yVelocity = 0;
+            if (jump)
+            {
+                yVelocity = jumpSpeed;
+            }
+		}
+        else
+		{
+            yVelocity += Physics2D.gravity.y * Time.fixedDeltaTime;
+		}
+
+        //yVelocity += Physics2D.gravity.y * Time.fixedDeltaTime;
+
+        controller.Move(new Vector2(xVelocity, yVelocity) * Time.fixedDeltaTime);
     }
 
     private void HandleInput(InputAction.CallbackContext context)
     {
         if(context.action.name == "Move")
         {
-            Vector2 inputVector = context.ReadValue<Vector2>();
-            Move(inputVector);
+            inputVector = context.ReadValue<Vector2>();
         }
-    }
 
-    private void Move(Vector2 inputVector)
-    {
-        move = inputVector*speed;
+        if(context.action.name == "Jump")
+		{
+            jump = context.ReadValue<float>() > 0;
+		}
     }
 }
