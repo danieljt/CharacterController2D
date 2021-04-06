@@ -41,11 +41,13 @@ public class Player : MonoBehaviour
         if(controller.IsGrounded)
 		{
             yVelocity = 0;
+
             if (jump)
             {
                 yVelocity = jumpSpeed;
             }
 		}
+
         else
 		{
             yVelocity += Physics2D.gravity.y * Time.fixedDeltaTime;
