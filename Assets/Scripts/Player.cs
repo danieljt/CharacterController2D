@@ -11,16 +11,16 @@ public class Player : MonoBehaviour
     public float speed;
     public float jumpSpeed;
 
-    private CharacterController2D controller;
+    private ICharacterController2D controller;
     private PlayerInput input;
     private Vector2 inputVector;
     private float yVelocity;
     private float xVelocity;
     private bool jump;
     
-    private void Awake()
+    protected void Awake()
     {
-        controller = GetComponent<CharacterController2D>();
+        controller = GetComponent<ICharacterController2D>();
         input = GetComponent<PlayerInput>();
     }
 
