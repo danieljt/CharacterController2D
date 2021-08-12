@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using RPCharacterController2D;
 
 /// <summary>
 /// Character controller that handles sloped surfaces
@@ -172,4 +173,6 @@ public class IntermediateCharacterController2D : MonoBehaviour, ICharacterContro
 	{
 		get { return false; }
 	}
+
+	public CollisionFlags2D GetCollisionFlags => throw new System.NotImplementedException();
 }

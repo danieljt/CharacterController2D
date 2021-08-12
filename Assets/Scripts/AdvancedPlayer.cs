@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using RPCharacterController2D;
 
 public class AdvancedPlayer : MonoBehaviour
 {
@@ -35,7 +34,26 @@ public class AdvancedPlayer : MonoBehaviour
 
 	private void FixedUpdate()
 	{
+		//Debug.Log(controller.)
 		xVelocity = walkSpeed * input.x;
+		
+		if(controller.IsGrounded)
+		{
+			yVelocity = 0;
+
+			if(jump)
+			{
+				yVelocity = jumpSpeed;
+			}
+		}
+
+
+		else
+		{
+			yVelocity += Physics2D.gravity.y * Time.fixedDeltaTime;
+		}
+
+		controller.Move(new Vector2(xVelocity, yVelocity) * Time.fixedDeltaTime);
 	}
 
 	private void HandleInput(InputAction.CallbackContext context)

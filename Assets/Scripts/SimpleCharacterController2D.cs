@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using RPCharacterController2D;
 
 [RequireComponent(typeof(Rigidbody2D))]
 
@@ -36,7 +37,7 @@ public class SimpleCharacterController2D : MonoBehaviour, ICharacterController2D
 	{
 		float distance = direction.magnitude;
 
-		int hits = body.Cast(direction, contactFilter, results, distance + skinWidth);
+		int hits = body.Cast(direction, filter, results, distance + skinWidth);
 
 		for (int i = 0; i < hits; i++)
 		{
@@ -51,4 +52,6 @@ public class SimpleCharacterController2D : MonoBehaviour, ICharacterController2D
 	{
 		get { return false; }
 	}
+
+	public CollisionFlags2D GetCollisionFlags => throw new System.NotImplementedException();
 }

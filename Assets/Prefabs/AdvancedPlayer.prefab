@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4720389301169072480}
   - component: {fileID: 4720389301169072486}
   - component: {fileID: 4720389301169072484}
-  - component: {fileID: 8272521090839261677}
+  - component: {fileID: 4356002316765354170}
   - component: {fileID: 4036452627140959627}
   m_Layer: 0
   m_Name: AdvancedPlayer
@@ -164,7 +164,7 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &8272521090839261677
+--- !u!114 &4356002316765354170
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -173,10 +173,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4720389301169072509}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5aa8b5c1ee678894db9e43e2891e4e81, type: 3}
+  m_Script: {fileID: 11500000, guid: f32a7c08b083ac6448731e22631791ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
+  walkSpeed: 2
+  jumpSpeed: 5
 --- !u!114 &4036452627140959627
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,6 +191,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   contactOffset: 0.01
-  positionIterations: 2
-  slopeLimit: 45
-  forceSlide: 1
+  positionIterations: 4
+  slopeLimit: 60
+  slideOnGround: 0
+  slideOnCeilings: 0
+  forceSlide: 0

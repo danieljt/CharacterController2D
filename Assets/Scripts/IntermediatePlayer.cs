@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using RPCharacterController2D;
 
 public class IntermediatePlayer : MonoBehaviour
 {
