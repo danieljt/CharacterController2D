@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
+using RPCharacterController2D;
 
 ///<summary>
 /// test class for charactercontroller2d
@@ -11,16 +10,16 @@ public class Player : MonoBehaviour
     public float speed;
     public float jumpSpeed;
 
-    private CharacterController2D controller;
+    private ICharacterController2D controller;
     private PlayerInput input;
     private Vector2 inputVector;
     private float yVelocity;
     private float xVelocity;
     private bool jump;
     
-    private void Awake()
+    protected void Awake()
     {
-        controller = GetComponent<CharacterController2D>();
+        controller = GetComponent<ICharacterController2D>();
         input = GetComponent<PlayerInput>();
     }
 
@@ -41,11 +40,13 @@ public class Player : MonoBehaviour
         if(controller.IsGrounded)
 		{
             yVelocity = 0;
+
             if (jump)
             {
                 yVelocity = jumpSpeed;
             }
 		}
+
         else
 		{
             yVelocity += Physics2D.gravity.y * Time.fixedDeltaTime;

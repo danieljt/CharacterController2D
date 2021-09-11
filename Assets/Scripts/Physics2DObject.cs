@@ -58,7 +58,7 @@ public class Physics2DObject : MonoBehaviour
     private void FixedUpdate()
     {
         // First we apply gravity and calculate a target velocity
-        velocity += gravityScale*Physics2D.gravity*Time.fixedDeltaTime;
+        velocity += gravityScale * Time.fixedDeltaTime * Physics2D.gravity;
         velocity.x = targetVelocity.x;
 
         // We set isgrounded to false each frame before calculating it later
