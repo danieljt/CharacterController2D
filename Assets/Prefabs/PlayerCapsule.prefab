@@ -11,12 +11,12 @@ GameObject:
   - component: {fileID: 4720389301169072483}
   - component: {fileID: 4720389301169072482}
   - component: {fileID: 4720389301169072480}
-  - component: {fileID: 4720389301169072486}
+  - component: {fileID: -5628676365890233587}
   - component: {fileID: 4720389301169072484}
   - component: {fileID: 4356002316765354170}
-  - component: {fileID: 738470420088306705}
+  - component: {fileID: 4036452627140959627}
   m_Layer: 0
-  m_Name: AdvancedPlayer
+  m_Name: PlayerCapsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -109,8 +109,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!61 &4720389301169072486
-BoxCollider2D:
+--- !u!70 &-5628676365890233587
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -123,18 +123,8 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
   m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
+  m_Direction: 0
 --- !u!114 &4720389301169072484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -179,7 +169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 2
   jumpSpeed: 5
---- !u!114 &738470420088306705
+--- !u!114 &4036452627140959627
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -188,12 +178,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 4720389301169072509}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de5f1100ce4ba66419a93089f4db1abe, type: 3}
+  m_Script: {fileID: 11500000, guid: 5e1809d348ac6434da3ab09169c698a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   contactOffset: 0.01
-  positionIterations: 2
-  slopeLimit: 45
+  positionIterations: 4
+  slopeLimit: 80
   slideOnGround: 1
   slideOnCeilings: 1
   forceSlide: 1

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using RPCharacterController2D;
 
 [RequireComponent(typeof(Rigidbody2D))]
 

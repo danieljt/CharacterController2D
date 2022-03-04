@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using RPCharacterController2D;
 
 public class AdvancedPlayer : MonoBehaviour
 {

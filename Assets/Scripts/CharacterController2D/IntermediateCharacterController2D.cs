@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using RPCharacterController2D;
 
 /// <summary>
 /// Character controller that handles sloped surfaces

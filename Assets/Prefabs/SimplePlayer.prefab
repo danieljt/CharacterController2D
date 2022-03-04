@@ -47,6 +47,7 @@ SpriteRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -146,7 +147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c8c80024b5627e47a603829bbdce23f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skinWidth: 0.01
+  contactOffset: 0.01
 --- !u!114 &4720389301169072487
 MonoBehaviour:
   m_ObjectHideFlags: 0
