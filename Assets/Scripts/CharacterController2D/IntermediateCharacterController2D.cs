@@ -154,7 +154,7 @@ public class IntermediateCharacterController2D : MonoBehaviour, ICharacterContro
         return targetPosition;
     }
 
-    protected struct CastResult
+    protected readonly struct CastResult
 	{
         public readonly Rigidbody2D Rigidbody2D { get; }
         public readonly Vector2 Normal { get; }

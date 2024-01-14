@@ -90,7 +90,7 @@ TextureImporter:
       213: 8926400236593123651
     second: Terrain-Green_28
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -107,10 +107,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -120,8 +122,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -149,6 +151,8 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -160,6 +164,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -172,6 +177,20 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
@@ -800,9 +819,34 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-  spritePackingTag: 
+    nameFileIdTable:
+      Terrain-Green_0: -5123867881194334428
+      Terrain-Green_1: -4025063046784674069
+      Terrain-Green_10: -8683863871619701399
+      Terrain-Green_11: -4034798855193036230
+      Terrain-Green_12: 1275460553313985841
+      Terrain-Green_13: 2736018634459719570
+      Terrain-Green_14: 2758140251130741806
+      Terrain-Green_15: -8938839745057981153
+      Terrain-Green_16: -547118896854210666
+      Terrain-Green_17: 548849302626476660
+      Terrain-Green_18: 2973840008718712336
+      Terrain-Green_19: -4726820287203452769
+      Terrain-Green_2: 2306948241453873869
+      Terrain-Green_20: -7022411195065043651
+      Terrain-Green_21: -3896188136895030796
+      Terrain-Green_22: -310019629578993758
+      Terrain-Green_23: 7299324940001653983
+      Terrain-Green_24: 3705647408440102603
+      Terrain-Green_3: 401013983997165665
+      Terrain-Green_4: 6585770019713559309
+      Terrain-Green_5: -7419546234046013867
+      Terrain-Green_6: -2546014124210252784
+      Terrain-Green_7: 2267818925310581560
+      Terrain-Green_8: 3654188774000142983
+      Terrain-Green_9: -8535711252144611911
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
